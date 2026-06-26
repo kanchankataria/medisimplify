@@ -4,6 +4,7 @@ import uvicorn
 from pdf_parser import extract_text_from_pdf, is_scanned_pdf, pdf_to_images
 from image_handler import prepare_image_for_claude, validate_image
 from claude_service import simplify_text_report, simplify_image_report
+from ml_service import predict_risk, load_models
 from database import (
     create_tables,
     save_report,
@@ -34,7 +35,12 @@ async def startup_event():
         print("Database connected!")
     except Exception as e:
         print(f"Database not connected: {e}")
-        print("Running without database for now...")
+
+    try:
+        load_models()
+        print("ML models loaded!")
+    except Exception as e:
+        print(f"ML models not loaded: {e}")
 
 
 @app.get("/")
