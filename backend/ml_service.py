@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Path to saved models
-MODELS_PATH = os.getenv("MODELS_PATH", "D:/medisimplify/ml/risk_models.pkl")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODELS_PATH = os.getenv("MODELS_PATH", os.path.join(BASE_DIR, "ml", "risk_models.pkl"))
 
 # Risk level mapping
 RISK_LABELS = {0: "Low", 1: "Medium", 2: "High"}
