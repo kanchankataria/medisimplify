@@ -7,14 +7,30 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Database connection settings from .env file
-DB_CONFIG = {
-    "host": os.getenv("DB_HOST", "localhost"),
-    "database": os.getenv("DB_NAME", "medisimplify"),
-    "user": os.getenv("DB_USER", "postgres"),
-    "password": os.getenv("DB_PASSWORD", ""),
-    "port": os.getenv("DB_PORT", "5432"),
-}
+# Support both DATABASE_URL (Render) and individual variables (local)
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    # Render provides a full connection URL
+    import urllib.parse
+
+    result = urllib.parse.urlparse(DATABASE_URL)
+    DB_CONFIG = {
+        "host": result.hostname,
+        "database": result.path[1:],
+        "user": result.username,
+        "password": result.password,
+        "port": result.port or 5432,
+    }
+else:
+    # Local development
+    DB_CONFIG = {
+        "host": os.getenv("DB_HOST", "localhost"),
+        "database": os.getenv("DB_NAME", "medisimplify"),
+        "user": os.getenv("DB_USER", "postgres"),
+        "password": os.getenv("DB_PASSWORD", ""),
+        "port": os.getenv("DB_PORT", "5432"),
+    }
 
 
 def get_connection():
