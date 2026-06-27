@@ -30,8 +30,8 @@ __pycache__/
 *.joblib
 
 # Dataset files — too large for GitHub
-ml/data/
-*.csv
+
+ml/heart_cleveland.csv
 
 # VS Code
 .vscode/
